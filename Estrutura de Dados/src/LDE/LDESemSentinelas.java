@@ -50,7 +50,9 @@ public class LDESemSentinelas<T> implements ILista<T>{
 		T elementRemoved = aux.getElement();
 		if(position == 0){
 			inicio = inicio.getNext();
-			inicio.setPrev(null);
+			if (inicio != null) {
+				inicio.setPrev(null);
+			}
 		}else if(aux.getNext() != null){
 			aux.getPrev().setNext(aux.getNext());
 			aux.getNext().setPrev(aux.getPrev());
@@ -101,6 +103,13 @@ public class LDESemSentinelas<T> implements ILista<T>{
 		return false;
 	}
 	
+	public void removeAll(){
+		while (inicio != null) {
+			remove(0);
+		}
+		inicio = new DNo<T>(null, null, null);
+	}
+	
 	public DNo<T> clonar(){
 		DNo<T> aux = inicio;
 		DNo<T> clonada = new DNo<T>(aux.getElement(), null, null);
@@ -136,13 +145,15 @@ public class LDESemSentinelas<T> implements ILista<T>{
 		String s = "[ ";
 		
 		DNo<T> aux = inicio;
-		while(aux.getNext() != null){
-			s += aux.getElement() + ", ";
-			aux = aux.getNext();
+		if (aux != null) {
+			while(aux.getNext() != null){
+				s += aux.getElement() + ", ";
+				aux = aux.getNext();
+			}
+			s += aux.getElement();
 		}
-		s += aux.getElement() + " ]";
 		
-		return s;
+		return s + " ]";
 	}
 
 }
