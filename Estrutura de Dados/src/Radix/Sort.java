@@ -1,39 +1,42 @@
 package Radix;
 
-import java.util.Random;
-
-import GeradorRandom.RandomTxt;
+import GravarArquivo.ArquivoManager;
 import LDE.LDESemSentinelas;
-import LSE.No;
 import Lista.ILista;
+import Models.ListaOrdenadaViewModel;
 
 public class Sort {
 	static ILista<Integer>[] vetor1;
 	static int maxDigitos;
-	static int currentDig = 1;
+	static int currentDigitos = 1;
 	static int numeroPassos = 1;
 	
 	
-	public static void Radix(LDESemSentinelas<Integer> lista){
-		maxDigitos = digitos(lista) - 1;
-		vetor1 = formatarLista(lista);
-		//System.out.println("Passo numero " + numeroPassos +": " + vetor1);
+	public static void Radix(ListaOrdenadaViewModel model){
+		long inicioRadix = System.currentTimeMillis(); // Pega os milisegundos
+		
+		maxDigitos = digitos(model.ListaOrdenada);
+		vetor1 = formatarLista(model.ListaOrdenada);
 		
 		while(maxDigitos != 0){
-			vetor1 = formatarArray(vetor1, currentDig);
-			//System.out.println("Passo numero " + numeroPassos +": " + vetor1);
+			vetor1 = formatarArray(vetor1);
 			maxDigitos--;
-			currentDig++;
-			//grau++;
+			currentDigitos++;
 		}
-		lista.removeAll();
 		
+		int index = 0;
 		for (int i = 0; i < vetor1.length; i++) {
 			for (int j = 0; j < vetor1[i].size(); j++) {
-				lista.add(vetor1[i].get(j));
+				model.ListaOrdenada.set(index, vetor1[i].get(j));
+				index++;
 			}
 		}
-		new RandomTxt().GerarOrdenado(lista);
+		
+		long finalRadix = System.currentTimeMillis();
+		
+		model.TotalTime = finalRadix - inicioRadix;
+		
+		new ArquivoManager().CriarArquivoOrdenado(model);
 	}
 	
 	private static ILista<Integer>[] formatarLista(ILista<Integer> l){
@@ -51,19 +54,15 @@ public class Sort {
 		return aux;
 	}
 	
-	private static ILista<Integer>[] formatarArray(ILista<Integer>[] vetor, int grau){
+	private static ILista<Integer>[] formatarArray(ILista<Integer>[] vetor){
 		ILista<Integer>[] aux = new LDESemSentinelas[10];
 		for (int i = 0; i < aux.length; i++) {
 			aux[i] = new LDESemSentinelas<Integer>();
 		}
 		
-		//int flag = vetor1[i].get(j)/10;
 		for (int i = 0; i < vetor.length; i++) {
 			for (int j = 0; j < vetor[i].size(); j++) {
-				
-				int flag = getDigito(vetor[i].get(j), grau);
-				
-				//int flag = Integer.toString(vetor[i].get(j) % grau).charAt(0);
+				int flag = getDigito(vetor[i].get(j));
 				aux[flag].add(vetor[i].get(j));
 			}
 		}
@@ -82,12 +81,12 @@ public class Sort {
 		return max;
 	}
 	
-	private static int getDigito(int numero, int grau){
-		int dig = Integer.toString(numero).length();
-		if(dig <= currentDig){
+	private static int getDigito(int numero){
+		int digitos = Integer.toString(numero).length();
+		if(digitos <= currentDigitos){
 			return 0;
 		}
-		for (int i = 0; i < grau; i++) {
+		for (int i = 0; i < currentDigitos; i++) {
 			numero = numero/10;
 		}
 		String s = Integer.toString(numero);
