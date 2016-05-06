@@ -7,9 +7,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Random;
 
+import LDE.LDE;
 import LDE.LDESemSentinelas;
+import Lista.ILista;
+import Lista.Lista;
 import Models.ListaOrdenadaViewModel;
 
 public class ArquivoManager {
@@ -44,10 +48,10 @@ public class ArquivoManager {
 			gravarArq.close();
 		}
 	}
-	
-	public LDESemSentinelas<Integer> LerArquivo(String path){
+
+	public ILista<Integer> LerArquivo(String path){
 		//GerarArquivoTxt();
-		LDESemSentinelas<Integer> lista = new LDESemSentinelas<Integer>();
+		ILista<Integer> lista = new LDESemSentinelas<Integer>();
 		
 		try {
 			FileReader arq = new FileReader(path);

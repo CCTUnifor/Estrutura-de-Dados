@@ -1,8 +1,10 @@
 package Models;
-import LDE.LDESemSentinelas;
+import java.util.ArrayList;
+
+import Lista.ILista;
 
 public class ListaOrdenadaViewModel {
 	public long TotalTime;
-	public LDESemSentinelas<Integer> ListaOrdenada;
+	public ILista<Integer> ListaOrdenada;
 	public String PathDaListaLida;
 }

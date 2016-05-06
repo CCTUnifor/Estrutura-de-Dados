@@ -18,7 +18,7 @@ public class LDE<T> implements ILista<T>{
 		DNo<T> aux = atRank(position);
 		if(aux == null){
 			header.setNext(new DNo<T>(element, header, footer));
-			header.getNext().setPrev(header);
+			//header.getNext().setPrev(header);
 		}else{
 			aux.setPrev((new DNo<T>(element, aux.getPrev(), aux)));
 			aux.getPrev().getPrev().setNext(aux.getPrev());

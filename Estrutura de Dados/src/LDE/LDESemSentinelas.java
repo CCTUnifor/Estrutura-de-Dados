@@ -94,12 +94,11 @@ public class LDESemSentinelas<T> implements ILista<T>{
 			return aux;
 		}
 		return null;
-		
 	}
 	
 	private boolean isValid(int pos){
-		if(pos >= 0 && pos < size) return true;
-		
+		if(pos >= 0 && pos < size) 
+			return true;
 		return false;
 	}
 	

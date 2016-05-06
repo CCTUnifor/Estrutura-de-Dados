@@ -70,7 +70,7 @@ public class Sort {
 		return aux;
 	}
 	
-	private static int digitos(LDESemSentinelas<Integer> l){
+	private static int digitos(ILista<Integer> l){
 		int max = Integer.toString(l.get(0)).length();
 		for (int i = 1; i < l.size(); i++) {
 			int aux = Integer.toString(l.get(i)).length();
