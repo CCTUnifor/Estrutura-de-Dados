@@ -6,9 +6,6 @@ import Radix.Sort;
 
 public class SortMain {
 
-
-	
-	
 	public static void main(String[] args) {
 		
 		
@@ -19,7 +16,7 @@ public class SortMain {
 		ListaOrdenadaViewModel model = new ListaOrdenadaViewModel();
 		
 		
-		model.ListaOrdenada = new ArquivoManager().LerArquivo(ARQUIVO + 0);
+		model.ListaOrdenada = ArquivoManager.LerArquivo(ARQUIVO + 0);
 		model.PathDaListaLida = ARQUIVO + 0;
 		
 		

@@ -24,13 +24,13 @@ public class ArquivoManager {
 		
 		try {
 			//Verificar quantos arquivos Random existe e criar outro com nome diferente
-				int i = 0;
-				File file = new File(ARQUIVO_NOME + i);
-				while(file.exists()){
-					i++;
-					file = new File(ARQUIVO_NOME + i);
-				}
-			arq = new FileWriter(ARQUIVO_NOME + i);
+			int i = 0;
+			File file = new File(ARQUIVO_NOME + i);
+			while(file.exists()){
+				i++;
+				file = new File(ARQUIVO_NOME + i);
+			}
+			arq = new FileWriter(file);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,7 +49,7 @@ public class ArquivoManager {
 		}
 	}
 
-	public ILista<Integer> LerArquivo(String path){
+	public static ILista<Integer> LerArquivo(String path){
 		//GerarArquivoTxt();
 		ILista<Integer> lista = new LDESemSentinelas<Integer>();
 		

@@ -16,6 +16,7 @@ public class Sort {
 		long inicioRadix = System.currentTimeMillis(); // Pega os milisegundos
 		
 		maxDigitos = digitos(model.ListaOrdenada);
+		//maxDigitos = 3;
 		vetor1 = formatarLista(model.ListaOrdenada);
 		
 		while(maxDigitos != 0){
