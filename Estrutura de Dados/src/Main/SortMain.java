@@ -1,8 +1,8 @@
 package Main;
 
-import GravarArquivo.ArquivoManager;
 import Models.ListaOrdenadaViewModel;
 import Radix.Sort;
+import Util.ArquivoManager;
 
 public class SortMain {
 
@@ -16,8 +16,8 @@ public class SortMain {
 		ListaOrdenadaViewModel model = new ListaOrdenadaViewModel();
 		
 		
-		model.ListaOrdenada = ArquivoManager.LerArquivo(ARQUIVO + 0);
-		model.PathDaListaLida = ARQUIVO + 0;
+		model.ListaOrdenada = ArquivoManager.LerArquivo(ARQUIVO + 1);
+		model.PathDaListaLida = ARQUIVO + 1;
 		
 		
 		System.out.println("Antes do Radix Sort: " + model.ListaOrdenada);

@@ -1,19 +1,21 @@
 package Radix;
 
-import GravarArquivo.ArquivoManager;
 import LDE.LDESemSentinelas;
 import Lista.ILista;
 import Models.ListaOrdenadaViewModel;
+import Util.ArquivoManager;
+import Util.PerformanceTest;
 
 public class Sort {
-	static ILista<Integer>[] vetor1;
-	static int maxDigitos;
-	static int currentDigitos = 1;
-	static int numeroPassos = 1;
+	private static ILista<Integer>[] vetor1;
+	private static int maxDigitos;
+	private static int currentDigitos = 1;
+	private static int numeroPassos = 1;
 	
 	
 	public static void Radix(ListaOrdenadaViewModel model){
 		long inicioRadix = System.currentTimeMillis(); // Pega os milisegundos
+		long memoryStart = PerformanceTest.getMemoryUsedNow();
 		
 		maxDigitos = digitos(model.ListaOrdenada);
 		//maxDigitos = 3;
@@ -33,9 +35,11 @@ public class Sort {
 			}
 		}
 		
+		long memoryFinal = PerformanceTest.getMemoryUsedNow();
 		long finalRadix = System.currentTimeMillis();
 		
 		model.TotalTime = finalRadix - inicioRadix;
+		model.TotalMemoryUsed = memoryFinal - memoryStart;
 		
 		new ArquivoManager().CriarArquivoOrdenado(model);
 	}

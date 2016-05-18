@@ -1,4 +1,4 @@
-package GravarArquivo;
+package Util;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,10 +40,10 @@ public class ArquivoManager {
 			Random gerador = new Random();
 			
 			gravarArq.println("-------------- Arquivo gerado automaticamente --------------");
-			gravarArq.println("---------- 10000 números randomicamente de 0 à 500 ----------\n");
+			gravarArq.println("---------- 10000 números randomicamente de 0 à 1000 ----------\n");
 			
 			for (int i = 0; i < 10000; i++) {
-				gravarArq.println(gerador.nextInt(501));
+				gravarArq.println(gerador.nextInt(1001));
 			}
 			gravarArq.close();
 		}
@@ -105,7 +105,8 @@ public class ArquivoManager {
 			PrintWriter gravarArq = new PrintWriter(arq);
 			
 			gravarArq.println("---------- Lista ordenada do arquivo: " + model.PathDaListaLida + " -----------");
-			gravarArq.println("-------- Tempo de duração da ordenação : "+ model.TotalTime + " milisegundos --------\n");
+			gravarArq.println("-------- Tempo de duração da ordenação : "+ model.TotalTime + " milisegundos --------");
+			gravarArq.println("-------- Memoria usada aproximada: " + model.TotalMemoryUsed + " bytes -------------\n");
 			
 			for (int i = 0; i < model.ListaOrdenada.size(); i++) {
 				gravarArq.println(model.ListaOrdenada.get(i));
