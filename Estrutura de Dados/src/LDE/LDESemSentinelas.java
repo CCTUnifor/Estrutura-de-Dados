@@ -1,8 +1,15 @@
 package LDE;
 
-import Lista.ILista;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
-public class LDESemSentinelas<T> implements ILista<T>{
+
+import Lista.ILista;
+import Lista.MyInterator;
+
+public class LDESemSentinelas<T> implements ILista<T>, Iterable<T>{
 
 	private DNo<T> inicio;
 	private int size;
@@ -31,7 +38,7 @@ public class LDESemSentinelas<T> implements ILista<T>{
 		size++;
 	}
 
-	public void add(T element) {
+	public boolean add(T element) {
 		DNo<T> aux = inicio;
 		if(size == 0){
 			aux.setElement(element);
@@ -42,7 +49,7 @@ public class LDESemSentinelas<T> implements ILista<T>{
 			aux.setNext(new DNo<T>(element, aux, null));
 		}
 		size++;
-		
+		return true;
 	}
 
 	public T remove(int position){
@@ -154,5 +161,16 @@ public class LDESemSentinelas<T> implements ILista<T>{
 		
 		return s + " ]";
 	}
+	
+	@Override
+	public Stream<T> stream(){
+		return Stream.of(inicio.getElement());
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new MyInterator<T>(this);
+	}
+
 
 }

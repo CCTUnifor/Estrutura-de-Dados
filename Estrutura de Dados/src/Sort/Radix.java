@@ -1,4 +1,4 @@
-package Radix;
+package Sort;
 
 import LDE.LDESemSentinelas;
 import Lista.ILista;
@@ -6,14 +6,14 @@ import Models.ListaOrdenadaViewModel;
 import Util.ArquivoManager;
 import Util.PerformanceTest;
 
-public class Sort {
+public class Radix {
 	private static ILista<Integer>[] vetor1;
 	private static int maxDigitos;
 	private static int currentDigitos = 1;
 	private static int numeroPassos = 1;
 	
 	
-	public static void Radix(ListaOrdenadaViewModel model){
+	public static void Start(ListaOrdenadaViewModel model){
 		long inicioRadix = System.currentTimeMillis(); // Pega os milisegundos
 		long memoryStart = PerformanceTest.getMemoryUsedNow();
 		

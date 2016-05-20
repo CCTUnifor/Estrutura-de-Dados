@@ -1,5 +1,8 @@
 package Lista;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
 import LDE.DNo;
 import Pilha.No;
 
@@ -28,9 +31,10 @@ public class Lista<T> implements ILista<T> {
 			aux.setNext(new No<T>(element, null));
 		}
 		size++;
+		
 	}
 
-	public void add(T element) {
+	public boolean add(T element) {
 		No<T> aux = header;
 		if(size > 0){
 			aux = atRank(size - 1);
@@ -39,6 +43,7 @@ public class Lista<T> implements ILista<T> {
 			aux.setElement(element);
 		}
 		size++;
+		return true;
 	}
 
 	public T remove(int position) {
@@ -86,6 +91,16 @@ public class Lista<T> implements ILista<T> {
 		if(pos >= 0 && pos < size) 
 			return true;
 		return false;
+	}
+
+	@Override
+	public Stream<T> stream(){
+		return Stream.of(header.getElement());
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new MyInterator<T>(this);
 	}
 	
 }

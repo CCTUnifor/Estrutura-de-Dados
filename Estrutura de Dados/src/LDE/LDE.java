@@ -1,8 +1,12 @@
 package LDE;
 
-import Lista.ILista;
+import java.util.Iterator;
+import java.util.stream.Stream;
 
-public class LDE<T> implements ILista<T>{
+import Lista.ILista;
+import Lista.MyInterator;
+
+public class LDE<T> implements ILista<T>, Iterable<T>{
 
 	private DNo<T> header, footer;
 	private int size;
@@ -26,9 +30,10 @@ public class LDE<T> implements ILista<T>{
 		}
 	}
 
-	public void add(T element) {
+	public boolean add(T element) {
 		footer.setPrev(new DNo<T>(element, footer.getPrev(), footer));
 		size++;
+		return true;
 	}
 
 	public T remove(int position) {
@@ -106,6 +111,16 @@ public class LDE<T> implements ILista<T>{
 		s += aux.getElement() + " ]";
 		
 		return s;
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new MyInterator<T>(this);
+	}
+
+	@Override
+	public Stream<T> stream() {
+		return Stream.of(header.getNext().getElement());
 	}
 	
 }

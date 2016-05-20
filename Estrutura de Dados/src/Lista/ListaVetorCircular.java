@@ -1,5 +1,8 @@
 package Lista;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
 public class ListaVetorCircular<T> implements ILista<T> {
 
 	private Object[] vector;
@@ -27,12 +30,13 @@ public class ListaVetorCircular<T> implements ILista<T> {
 			}
 	}
 
-	public void add(T element) {
+	public boolean add(T element) {
 		if(!isFull()){
 			vector[footer] = element;
 			footer = (footer+1) % n;
 			size++;
 		}
+		return true;
 	}
 
 	public T remove(int position) {
@@ -90,6 +94,16 @@ public class ListaVetorCircular<T> implements ILista<T> {
 		}
 		return s;
 		
+	}
+
+	@Override
+	public Stream<T> stream(){
+		return Stream.of((T)vector[0]);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return new MyInterator<T>(this);
 	}
 
 }
