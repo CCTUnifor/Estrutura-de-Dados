@@ -1,0 +1,127 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+
+public class ArvoreNAria {
+	
+	public void PreOrdem(NodeElement no) {
+		System.out.print(no.getElement() + " "); //visita no
+		
+		for (NodeElement filho : no.getFilhos()) {
+			PreOrdem(filho);
+		}
+		
+		//for(int i = 0; i < no.getFilhos().size(); i++) {
+		//    PreOrdem(no.getFilhos().get(i));
+		// }
+	}
+	
+	public void PosOrdem(NodeElement no) {
+		for (NodeElement filho : no.getFilhos()) {
+			PosOrdem(filho);
+		}
+		System.out.print(no.getElement() + " "); //visita no
+	}
+	
+	public void Largura(NodeElement no) {
+		Queue<NodeElement> fila = new LinkedList<NodeElement>();
+		fila.add(no); 
+		while (!fila.isEmpty()) {
+			NodeElement frente = fila.poll();
+			System.out.print(frente.getElement() + " "); //visita (frente)
+			for (NodeElement filho : frente.getFilhos()) {
+			    fila.add(filho);
+			}
+		}
+	}
+	
+	/**
+	 *  alterar o inOrdem retirando os 2 ifs
+	 * 
+	 */
+	public void inOrdem(NodeElement no) {
+		if(no.getFilhos().size() == 0) { //folha
+			System.out.print(no.getElement() + " ");
+		} else {
+			for(int i = 0; i < no.getFilhos().size(); i++) {
+			    if (i == 0) { //inOrdem do 1o. filho
+				  inOrdem(no.getFilhos().get(0));
+				  System.out.print(no.getElement() + " "); //visita o pai
+			    } else { //irmaos
+			    	inOrdem(no.getFilhos().get(i));
+			    }
+			 }
+		}
+	}
+
+}
+
+//==============================================================
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class NodeElement {
+	private String element;
+	private List<NodeElement> filhos;
+	
+	public NodeElement(String element) {
+		this.element = element;
+		this.filhos = null;
+	}
+	
+	public NodeElement adicionarFilho(String element) {
+		if (this.filhos == null) {
+			this.filhos = new ArrayList<NodeElement>();
+		}
+		NodeElement filho = new NodeElement(element); 
+		this.filhos.add(filho);
+		return filho;
+	}
+	
+	public String getElement() {
+		return element;
+	}
+	public void setElement(String element) {
+		this.element = element;
+	}
+	public List<NodeElement> getFilhos() {
+		if (filhos == null) return new ArrayList<NodeElement>();
+		return filhos;
+	}
+	
+//	public void setFilhos(List<NodeElement> filhos) {
+//		this.filhos = filhos;
+//	}
+	
+}
+// ==================================================================
+
+public class TestArvore {
+
+	public static void main(String[] args) {
+		NodeElement raiz = new NodeElement("A");
+		
+		NodeElement NoB = raiz.adicionarFilho("B");
+		NodeElement NoC = raiz.adicionarFilho("C");
+		NodeElement NoD = raiz.adicionarFilho("D");
+		
+		NodeElement NoE = NoC.adicionarFilho("E");
+		NodeElement NoF = NoC.adicionarFilho("F");
+		NodeElement NoG = NoC.adicionarFilho("G");
+		NodeElement NoH = NoC.adicionarFilho("H");
+		
+		NodeElement NoI = NoG.adicionarFilho("I");
+		NodeElement NoJ = NoG.adicionarFilho("J");
+		NodeElement NoL = NoG.adicionarFilho("L");
+		
+		ArvoreNAria t1 = new ArvoreNAria();
+		System.out.println("PreOrdem: "); t1.PreOrdem(raiz);
+		System.out.println("\n\nPosOrdem: "); t1.PosOrdem(raiz);
+		System.out.println("\n\nLargura: "); t1.Largura(raiz);
+		System.out.println("\n\nInOrdem: "); t1.inOrdem(raiz);
+
+	}
+
+}
+// =====================================================================

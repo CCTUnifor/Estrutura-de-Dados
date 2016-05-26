@@ -1,0 +1,410 @@
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Vector;
+
+public class Arvore implements Tree {+
+    private Node sentinela;
+
+    /**
+     * Construtor default, cria o sentinela.
+     */
+    public Arvore() {
+        sentinela = new Node(null, null);
+    }
+
+    /**
+     * Este método recebe um Position e retorna um Node se o Position
+     * pertencer a árvore, caso contrário lança uma exceção (InvalidPositionException)
+     * @param p Position a ser convertido
+     * @return (Node)p
+     * @throws InvalidPositionException Exceção de Position Inválido
+     */
+    public Node checkPosition(Position p) throws InvalidPositionException {
+        if (p == null) // se for 'null' lança exceção.
+            throw new InvalidPositionException("Position = Null");
+        if (p == sentinela) // se for o próprio sentinela lança exceção.
+            throw new InvalidPositionException("Position = Sentinela");
+        if (p instanceof Node) {
+            Node n = (Node)p;
+            while (n.getPai() != null) {
+                n = n.getPai();
+            }
+            // se o raíz do Position for diferente do raíz da árvore.
+            if (n != sentinela.getFilho())
+                throw new InvalidPositionException("Position não pertence a esta árvore");
+            return (Node)p;
+        }
+        else { // se não for uma instancia de Node laça exceção.
+            throw new InvalidPositionException("Posição não é um Node");
+        }
+    }
+
+    /**
+     * Cria a raiz da árvore, com o Object recebido por parâmetro.
+     * @param e Object da raiz.
+     */
+    public void cria(Object e) {
+        Node raiz = new Node(null, e);
+        sentinela.setFilho(raiz);
+    }
+
+    /**
+     * Cria um filho para o Position p.
+     * @param e Object do filho.
+     * @param p Position pai.
+     * @throws InvalidPositionException Exceção de Position Inválido
+     */
+    public void cria(Object e, Position p) throws InvalidPositionException {
+        Node n = checkPosition(p);
+        Node filho = new Node(n, e);
+        if (n.getFilho() == null) {
+            n.setFilho(filho);
+        }
+        else {
+            Node irmao = n.getFilho();
+            while (irmao.getIrmao() != null) {
+                irmao = irmao.getIrmao();
+            }
+            irmao.setIrmao(filho);
+        }
+    }
+
+    /**
+     * Este método retorna a quantidade no's da árvore. (caminhamento largura)
+     * @return int
+     */
+    public int size() {
+        int size = 0;
+        Node n;
+        Vector v = new Vector();
+        v.add(root());
+        while (v.size() != 0) {
+            size++;
+            n = ( (Node) v.remove(0)).getFilho();
+            while (n != null) {
+                v.add(n);
+                n = n.getIrmao();
+            }
+        }
+        return size;
+    }
+    
+    /**
+     * Este método verifica se a árvore está vazia.
+     * @return boolean
+     */
+       public int size2(Position v) {
+         int cont = 0;
+        
+         Iterator children = filhos(v);
+       
+         while (children.hasNext()) 
+             cont += size2((Node)children.next());
+
+         //cont++;
+         
+         return cont+1;
+      }
+      
+     public String postorderPrint(Position v) {
+        String s = "";
+        Iterator children = filhos(v);
+        while (children.hasNext())
+          s += postorderPrint((Node)children.next()) + " ";
+        s += v.element();		
+        return s;
+      }
+    
+
+    /**
+     * Este método verifica se a árvore está vazia.
+     * @return boolean
+     */
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    /**
+     * Este método gera um Vector de todos os Object da árvore (caminhamento largura)
+     * @return Vector de Object.
+     */
+    public Vector getElements() {
+        Node n;
+        Vector aux = new Vector();
+        Vector v = new Vector();
+        aux.add(root());
+        while (aux.size() != 0) {
+            v.add( ( (Node) aux.get(0)).element());
+            n = ( (Node) aux.remove(0)).getFilho();
+            while (n != null) {
+                aux.add(n);
+                n = n.getIrmao();
+            }
+        }
+        return v;
+    }
+
+    /**
+     * Este método gera um Vector de todos os Positions da árvore (caminhamento largura)
+     * @return Vector de Positions
+     */
+    public Vector getPositions() {
+        Node n;
+        Vector aux = new Vector();
+        Vector v = new Vector();
+        aux.add(root());
+        while (aux.size() != 0) {
+            v.add(aux.get(0));
+            n = ( (Node) aux.remove(0)).getFilho();
+            while (n != null) {
+                aux.add(n);
+                n = n.getIrmao();
+            }
+        }
+        return v;
+    }
+
+    /**
+     * @return Raiz da árvore.
+     */
+    public Position root() {
+        return sentinela.getFilho();
+    }
+
+    /**
+     * Retorna o filho do Position p, se não existir retorna 'null', mas antes
+     * de tudo verifica se o Position p é válido.
+     * @param p Position pai.
+     * @return Filho do Position p.
+     * @throws InvalidPositionException Exceção de Position Inválido
+     */
+    public Position filho(Position p) throws InvalidPositionException {
+        Node n = checkPosition(p);
+        return n.getFilho();
+    }
+
+    /**
+     * Retorna o irmão do Position p, se não existir retorna 'null', mas antes
+     * de tudo verifica se o Position p é válido.
+     * @param p Position irmão
+     * @return Irmão do Position p
+     * @throws InvalidPositionException Exceção de Position Inválido
+     */
+    public Position irmao(Position p) throws InvalidPositionException {
+        Node n = checkPosition(p);
+        return n.getIrmao();
+    }
+
+    /**
+     * Retorna o pai do Position p, se não existir retorna 'null', mas antes
+     * de tudo verifica se o Position p é válido.
+     * @param p Position filho.
+     * @return Pai do Position p.
+     * @throws InvalidPositionException Exceção de Position Inválido.
+     */
+    public Position pai(Position p) throws InvalidPositionException {
+        Node n = checkPosition(p);
+        return n.getPai();
+    }
+
+    /**
+     * Este método gera um Vector com todos os filhos do Position p, mas antes
+     * verifica se o Position p é válido.
+     * @param p Position pai.
+     * @return Vector de filhos.
+     * @throws InvalidPositionException Exceção de Position Inválido.
+     */
+    public java.util.Iterator filhos(Position p) throws InvalidPositionException {
+        Node n = checkPosition(p);
+        Vector v = new Vector();
+        n = n.getFilho();
+        while (n != null) {
+            v.add(n);
+            n = n.getIrmao();
+        }
+        return v.iterator();
+    }
+
+    /**
+     * Este método verifica se o Position passado por parametro é um Position
+     * externo, ou seja, um nó folha.
+     * @param p Position
+     * @return Position p é externo.
+     */
+    public boolean isExternal(Position p) {
+        Node n = checkPosition(p);
+        return n.getFilho() == null;
+    }
+
+    /**
+     * Este método verifica se o Position passado por parametro é um Position
+     * interno, ou seja, possui pelo menos um filho.
+     * @param p Position
+     * @return Position p é interno.
+     */
+    public boolean isInternal(Position p) {
+        Node n = checkPosition(p);
+        return n.getFilho() != null;
+    }
+
+    /**
+     * Este método verifica se o Position passado por parametro é o raiz.
+     * @param p Position.
+     * @return Position p é o raiz.
+     */
+    public boolean isRoot(Position p) {
+        Node n = checkPosition(p);
+        return n == sentinela.getFilho();
+    }
+
+    /**
+     * Troca os objetos dos dois Positions passados por parâmetro.
+     * @param p1 Position.
+     * @param p2 Position.
+     * @throws InvalidPositionException Exceção de Position Inválido.
+     */
+    public void swapElements(Position p1, Position p2) throws InvalidPositionException {
+        Node n1 = checkPosition(p1);
+        Node n2 = checkPosition(p2);
+        Object temp = n1.element();
+        n1.setElement(n2.element());
+        n2.setElement(temp);
+    }
+
+    /**
+     * Este método substitui o Object do Position p pelo Object e, retornado o
+     * Object antigo.
+     * @param p Position.
+     * @param e Novo Object.
+     * @return Object antigo.
+     * @throws InvalidPositionException Exceção de Position Inválido.
+     */
+    public Object replaceElements(Position p, Object e) throws InvalidPositionException {
+        Node n = checkPosition(p);
+        Object temp = n.element();
+        n.setElement(e);
+        return temp;
+    }
+   
+    /**
+     * Este método retorna o percurso em pré-ordem de uma árvore N-Ária.
+     * @param p Position pai.
+     * @return String com percurso em pré-ordem.
+     * @throws InvalidPositionException Exceção de Position Inválido.
+     */
+
+     public String preorderPrint(Position v) {
+       String s = v.element().toString(); 
+       Iterator children = filhos(v);
+       while (children.hasNext())
+              s += " " + preorderPrint((Node)children.next());
+       return s;
+     }
+    
+
+      //*****************************
+    public Vector inOrdemPrint(Position p, Vector v) {
+      if (isExternal(p)) v.add(p.element()); //System.out.print(p.element() + " ");
+                         //seforfolha
+      else {
+        Iterator c = filhos(p);
+        inOrdemPrint(((Node)c.next()), v);
+        v.add(p.element()); //System.out.print(p.element() + " "); 
+        while(c.hasNext())
+           inOrdemPrint((Node)c.next(), v);
+       }
+       return v;
+     }
+
+     /**
+     * Chama o caminhamento inOrdem(root());
+     */
+    public void inOrdem() {
+        inOrdem(root());
+    }
+
+    /**
+     * Realiza o caminhamento In-Ordem.
+     * @param p Raiz.
+     */
+    public void inOrdem(Position n) {
+        //Node n = (Node) p;
+        Position c; //Node c;
+        if (n != null) {
+            c = filho(n); //n.getFilho();
+            inOrdem(c);
+            System.out.print(n.element() + "   ");
+            while (c != null) {
+                c = irmao(c);//c.getIrmao();
+                inOrdem(c);
+            }
+        }
+    }
+    
+    /**
+     * Realiza o caminhamento Pre-Ordem.
+     * @param p Raiz.
+     */
+    public void preOrdem(Position n) {
+        if (n != null) {
+            System.out.print(n.element() + "   ");
+            preOrdem(filho(n));
+            preOrdem(irmao(n));
+        }
+    }
+
+    /**
+     * Contar o numeros de nós.
+     * @param p Raiz.
+     */
+    public boolean busca(Position n, final Object v) {
+        boolean retorno = false;
+    	if (n != null) {
+            /*System.out.print(n.element() + "   ");*/
+    		if (v.equals(n.element())) {
+    			retorno = true;
+    		}
+            retorno = retorno || busca(filho(n), v);
+            retorno = retorno || busca(irmao(n), v);
+        }
+    	return retorno;
+    }
+    
+    /**
+     * Contar o numeros de nós.
+     * @param p Raiz.
+     */
+    public int contar(Position n) {
+        int cont = 0;
+    	if (n != null) {
+            /*System.out.print(n.element() + "   ");*/
+            cont += contar(filho(n));
+            cont++;
+            cont += contar(irmao(n));
+        }
+    	return cont;
+    }
+
+    /**
+     * Este método retorna o percurso em em Largura dos no's da árvore. (caminhamento largura)
+     * @return String
+     */
+    public String largura() {
+        String s = "";
+        Node n;
+        Queue v = new LinkedList();
+        v.add(root());
+        while (v.size() != 0) {
+            s += ((Node)v.element()).element().toString();
+        	n = ( (Node) v.poll()).getFilho();
+            while (n != null) {
+                v.add(n);
+                n = n.getIrmao();
+            }
+        }
+        return s;
+    }
+}
+ 

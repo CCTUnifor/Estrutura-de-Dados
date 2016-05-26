@@ -1,0 +1,239 @@
+import java.util.*;
+
+class No {
+
+  Object Dado;
+  No esq;
+  No dir;
+
+  public No() {
+    Dado = null;
+    esq = null;
+    dir = null;
+  }
+
+   public No(Object x) {
+     Dado = x;
+     esq = null;
+     dir = null;
+ }
+
+}
+
+
+
+class ArvoreBinaria {
+
+/*-----------------------------------------------------------------*/
+
+No root; // No raiz 
+
+public No Create(Object x, No e, No  d) {
+ 		 No Aux = new No(x);
+		 Aux.esq = e;
+  		 Aux.dir = d;
+
+  		 return Aux;
+     }
+
+/*--------------- PERCURSOS -------------------- */
+
+public ArvoreBinaria() {
+   root = null;
+}
+
+public void Criar_Raiz(Object x)
+{
+   root = new No(x);
+}
+
+public boolean isEmpty()
+{
+  return root == null;
+}
+
+/*---------------------------------------------------------------*/
+
+public void PreOrdem(No N) {
+
+   if (N != null) {
+      System.out.print(N.Dado + "   ");
+      PreOrdem(N.esq);
+      PreOrdem(N.dir);
+   }
+
+}
+
+public void PosOrdem(No N) {
+
+   if (N != null) {
+    
+      PosOrdem(N.esq);
+      PosOrdem(N.dir);
+      System.out.print(N.Dado + "   ");
+   }
+
+}
+
+public void Euler(No N) {
+
+   if (N != null) {
+      System.out.print(N.Dado + "   ");
+      Euler(N.esq);
+      System.out.print(N.Dado + "   ");
+      Euler(N.dir);
+      System.out.print(N.Dado + "   ");
+   }
+
+}
+
+static int i=0;
+public No Constroi(No T, String s) {
+
+ char dado = s.charAt(i++);
+ //System.out.print(dado + " ");	
+
+ if (dado != '.') {
+          T = new No(new Character(dado));
+          T.esq = Constroi(T.esq, s);
+          T.dir = Constroi(T.dir, s);
+     } else T = null;
+     
+  return T;   
+}
+
+
+public int Altura(No n, int a) {
+
+        int alturae = 0, alturad = 0;
+        
+        if (n != null) {
+            alturae = alturad = a;
+            alturae = Math.max(alturae, Altura(n.esq, a + 1));
+            alturad = Math.max(alturad, Altura(n.dir, a + 1));
+            System.out.println("Fator de Balanceamento: " + n.Dado + "  " + (alturae-alturad));
+        }
+        return ((alturae > alturad) ? alturae : alturad) ;
+}
+
+/*----------------------------------------------------------------*/
+
+public void Criar_Filho_Esquerdo(No pai, Object x) {
+   if (pai != null) {
+     if (pai.esq != null) System.out.println("Subárvore já existente "); 
+     else  pai.esq = new No(x);
+       
+   }
+}
+
+public void Criar_Filho_Direito(No pai, Object x) {
+   if (pai != null) {
+     if (pai.dir != null) System.out.println("Subárvore já existente ");
+     else  pai.dir = new No(x);
+       
+   }
+}
+
+public No Filho_Direito(No pai) {
+	return pai.dir;
+}
+
+public No Filho_Esquerdo(No pai) {
+	return pai.esq;
+}
+
+public static No copia(No T1, No T2) {
+    if (T1 != null) {
+       //System.out.println(T1.Dado + "\n");
+       T2 = new No(T1.Dado);
+       T2.esq = copia(T1.esq, T2.esq);
+       T2.dir = copia(T1.dir, T2.dir);
+    }
+    return T2;
+}
+
+void Descendentes(No N, Object el, boolean cond) {
+   
+    if (N != null) {
+    
+      if (cond) System.out.print(N.Dado + "   ");  
+      
+      if (N.Dado.equals(el)) cond = true; 
+      
+      
+      Descendentes(N.esq, el, cond);
+      Descendentes(N.dir, el, cond);
+   }
+
+}
+
+/*----------------------------------------------------------------------*/
+public static void main(String args[]) {
+
+  ArvoreBinaria T = new ArvoreBinaria();
+  ArvoreBinaria T2 = new ArvoreBinaria();
+
+  T.Criar_Raiz(new Integer(10));
+  T.Criar_Filho_Esquerdo(T.root, new Integer(5));
+  T.Criar_Filho_Direito(T.root, new Integer(12));
+
+  T.Criar_Filho_Esquerdo(T.root.esq, new Integer(4));
+  T.Criar_Filho_Direito(T.root.esq, new Integer(6));
+
+  T.Criar_Filho_Esquerdo(T.root.esq.esq, new Integer(1));
+  T.Criar_Filho_Esquerdo(T.root.esq.esq.esq, new Integer(0));
+
+  System.out.println("\n\n Altura: " + T.Altura(T.root, 0));
+  
+  
+  T2.root = T2.Constroi(T2.root, "ABG..C.DE.F....");
+  T2.PreOrdem(T2.root);
+  
+  System.out.println("\n\n\n");
+  T2.Descendentes(T2.root, 'D', false);
+
+//    T.root = T.Create(new Integer(10), T.Create(new Integer(5), 
+//             T.Create(new Integer(4), T.Create(new Integer(1), null, null), null), 
+//             T.Create(new Integer(6), null, null)), T.Create(new Integer(12), null, null));
+
+   
+  //cout << T.root->Dado << "  " << T.root->esq->Dado << "  "
+  //     << T.root->dir->Dado << " " << T.root->esq->esq->Dado;
+
+  //cout << endl << endl;
+  
+  System.out.println("\n\n");
+
+  T.PreOrdem(T.root);
+  System.out.println("\n\n");
+  T.PosOrdem(T.root);
+  
+  
+  System.out.println("\n\n --- ");
+  
+  
+  T2.root = copia(T.root, T2.root);
+  
+  //cout << endl << endl;
+  
+  T2.PreOrdem(T2.root);
+  
+  System.out.println("\n\n");
+
+ 
+  }
+//---------------------------------------------------------------------------
+
+}
+
+
+/*
+ public static String preorderPrint(InspectableTree T, Position v) {
+    String s = v.element().toString(); 
+    PositionIterator children = T.children(v);
+    while (children.hasNext())
+            s += " " + preorderPrint(T, children.nextPosition());
+    return s;
+  }
+
+ */

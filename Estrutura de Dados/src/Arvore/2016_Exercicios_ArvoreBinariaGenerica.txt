@@ -1,0 +1,100 @@
+
+public class No {
+	
+	private Object element;
+	private No filhoEsq;
+	private No filhoDir;
+	
+	public No(Object element, No filhoEsq, No filhoDir) {
+		super();
+		this.element = element;
+		this.filhoEsq = filhoEsq;
+		this.filhoDir = filhoDir;
+	}
+	public void setElement(Object element) {
+		this.element = element;
+	}
+	public Object getElement() {
+		return element;
+	}
+	public void setFilhoEsq(No filhoEsq) {
+		this.filhoEsq = filhoEsq;
+	}
+	public No getFilhoEsq() {
+		return filhoEsq;
+	}
+	public void setFilhoDir(No filhoDir) {
+		this.filhoDir = filhoDir;
+	}
+	public No getFilhoDir() {
+		return filhoDir;
+	}
+}
+
+//=======================================================================
+public class Arvore {
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+//		No raiz = new No("A", new No("B", new No("D", null, null), new No("E", null, null)), 
+//				new No("C", null, new No("F", null, null)));
+
+		No raiz = new No(10, new No(2, new No(3, null, null), new No(4, null, null)), 
+				new No(7, null, new No(1, null, null)));
+
+		Arvore arv1 = new Arvore();
+		//arv1.preOrdem(raiz);
+		//arv1.inOrdemAdireita(raiz);
+		//System.out.println(arv1.buscapreOrdem(raiz, "X"));
+		System.out.println(arv1.somarposOrdem(raiz));
+	}
+
+	//somar os elementos da arvore
+	public int somarposOrdem(No n) {
+		int soma = 0;
+
+		if (n != null) {
+			if (n.getFilhoEsq() == null && n.getFilhoDir() == null) {
+			  soma = 1; //((Integer)n.getElement()).intValue();
+			}
+
+			soma += somarposOrdem(n.getFilhoEsq());
+			soma += somarposOrdem(n.getFilhoDir());
+		} 
+		return soma;
+	}
+
+	
+	public boolean buscapreOrdem(No n, Object obj) {
+		boolean retorno = false;
+		
+		if (n != null) {
+			if (n.getElement().equals(obj)) {
+				retorno = true;
+			}
+			retorno = retorno || buscapreOrdem(n.getFilhoEsq(), obj);
+			retorno = retorno || buscapreOrdem(n.getFilhoDir(), obj);
+		} 
+		return retorno;
+	}
+	
+	public void preOrdem(No n) {
+		if (n != null) {
+			System.out.println(n.getElement() + " ");
+			preOrdem(n.getFilhoEsq());
+			preOrdem(n.getFilhoDir());
+		} 
+	}
+	
+	public void inOrdemAdireita(No n) {
+		if (n != null) {
+			inOrdemAdireita(n.getFilhoDir());
+			System.out.println(n.getElement() + " ");
+			inOrdemAdireita(n.getFilhoEsq());
+		} else System.out.print("null" + " ");
+	}
+
+}
+
+
+// ======================================================
