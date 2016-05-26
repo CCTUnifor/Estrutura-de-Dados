@@ -1,51 +1,51 @@
 package Main;
 
-import java.awt.List;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import LDE.LDESemSentinelas;
-import Lista.ILista;
 import Models.ListaOrdenadaViewModel;
+import Sort.JavaSort;
+import Sort.Quick;
 import Sort.Radix;
+import Sort.Selection;
 import Util.ArquivoManager;
+import Util.PerformanceTest;
 
 public class SortMain {
 
 	
-	private static ILista<Integer> users = new LDESemSentinelas<Integer>();
-	
-	
 	public static void main(String[] args) {
 		
-		users.add(1);
-		users.add(584);
-		users.add(23483);
+		System.out.println("Ordenando...");
 		
-		LDESemSentinelas<Integer> s = (LDESemSentinelas<Integer>) users.stream()
-				.filter(u -> u > 400).collect(Collectors.toList());
+		// Configurando o espaço de Memoria Usado e o Tempo
+			long inicioRadix = System.currentTimeMillis(); // Milisegundos now
+			long memoryStart = PerformanceTest.getMemoryUsedNow(); // Memória usada now
 		
-		for (Integer string : users) {
-			System.out.println(string);
-		}
+		ListaOrdenadaViewModel model = new ListaOrdenadaViewModel();
+
 		final String ARQUIVO = "NumerosRandoms";
 		
 		//ArquivoManager.CriarArquivoNumerosRandons(ARQUIVO); //Gerar arquivo Txt com os numeros Randoms
-		
-		ListaOrdenadaViewModel model = new ListaOrdenadaViewModel();
-		
 		
 		model.ListaOrdenada = ArquivoManager.LerArquivo(ARQUIVO + 1);
 		model.PathDaListaLida = ARQUIVO + 1;
 		
 		
-		System.out.println("Antes do Radix Sort: " + model.ListaOrdenada);
+		//Radix.Start(model);
+		//JavaSort.Start(model);
+		//Selection.Start(model);
+		Quick.ordenar(model);
 		
-		Radix.Start(model);
+		// Terminando de Configurar o espaço de Memoria Usado e o Tempo
+			long memoryFinal = PerformanceTest.getMemoryUsedNow();
+			long finalRadix = System.currentTimeMillis();
+			
+			model.TotalTime = finalRadix - inicioRadix;
+			model.TotalMemoryUsed = memoryFinal - memoryStart;
 		
-		System.out.println("Depois do Radix Sort: " + model.ListaOrdenada);
+		// Gerando o Arquivo com os números ordenados
+			new ArquivoManager().CriarArquivoOrdenado(model);
+			
+		System.out.println("Ordenado!");
+		
 	}
 	
 

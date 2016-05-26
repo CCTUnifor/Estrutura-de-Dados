@@ -4,12 +4,12 @@ import java.util.Iterator;
 
 public class MyInterator<T> implements Iterator<T>{
 	private ILista<T> Lista;
+	private int index = 0;
 	
 	public MyInterator(ILista<T> lista){
 		this.Lista = lista;
 	}
 	
-	 private int index = 0;
 
      public boolean hasNext() {
          return index < Lista.size();

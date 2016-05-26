@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import LDE.LDE;
@@ -49,9 +50,9 @@ public class ArquivoManager {
 		}
 	}
 
-	public static ILista<Integer> LerArquivo(String path){
+	public static List<Integer> LerArquivo(String path){
 		//GerarArquivoTxt();
-		ILista<Integer> lista = new LDESemSentinelas<Integer>();
+		List<Integer> lista = new ArrayList<Integer>();
 		
 		try {
 			FileReader arq = new FileReader(path);
@@ -104,7 +105,7 @@ public class ArquivoManager {
 		if(arq != null){
 			PrintWriter gravarArq = new PrintWriter(arq);
 			
-			gravarArq.println("---------- Lista ordenada do arquivo: " + model.PathDaListaLida + " -----------");
+			gravarArq.println("---------- Lista ordenada do arquivo: " + model.PathDaListaLida + " || Tipo de Sort: "+model.TipoDeSort+"  -----------");
 			gravarArq.println("-------- Tempo de duração da ordenação : "+ model.TotalTime + " milisegundos --------");
 			gravarArq.println("-------- Memoria usada aproximada: " + model.TotalMemoryUsed + " bytes -------------\n");
 			

@@ -1,0 +1,233 @@
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * 
+ */
+
+/**
+ * @author professork5
+ *
+ */
+public class NodeElement {
+	private String valor;
+	private List<NodeElement> filhos;
+	
+	public NodeElement(String valor) {
+		super();
+		this.valor = valor;
+		this.filhos = new LinkedList<>();
+	}
+	
+	public NodeElement adicionarFilho(String v) {
+		if (this.getFilhos() == null) {
+			this.filhos = new LinkedList<>();
+		}
+		NodeElement filho = new NodeElement(v); 
+		this.filhos.add(filho);
+		return filho;
+	}
+	
+	public List<NodeElement> getFilhos() {
+		return filhos;
+	}
+	public void setFilhos(List<NodeElement> filhos) {
+		this.filhos = filhos;
+	}
+	public String getValor() {
+		return valor;
+	}
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
+	
+}
+
+// ==============================================================
+import java.util.LinkedList;
+import java.util.Queue;
+
+
+public class TestArvoreNaria {
+
+
+	public static void largura(NodeElement n) {
+		
+		Queue<NodeElement> fila = new LinkedList<NodeElement>();
+		fila.add(n);
+		
+		while (!fila.isEmpty()) {
+			System.out.print(fila.peek().getValor() + " "); //visita (frente(fila))
+			
+			NodeElement aux = fila.poll(); //desenfileirar
+			
+			for(NodeElement filho : aux.getFilhos()) {
+				fila.add(filho);
+			}
+			
+		}
+	}
+
+	
+	public static void preOrdem(NodeElement n) {
+		
+		System.out.print(n.getValor() + " "); //visitar(n)
+		
+		for(NodeElement filho : n.getFilhos()) {
+			preOrdem(filho);
+		}
+		
+	}
+	
+	public static void posOrdem(NodeElement n) {
+		
+		
+		for(NodeElement filho : n.getFilhos()) {
+			posOrdem(filho);
+		}
+		
+		System.out.print(n.getValor() + " "); //visitar(n)
+		
+	}
+	
+
+	public static String maior(NodeElement n) {
+		String maximo = " ";
+		String valor = null;
+		
+		for(NodeElement filho : n.getFilhos()) {
+			   valor = maior(filho);
+			   if (valor.charAt(0) > maximo.charAt(0)) {
+				   maximo = valor;
+			   }
+		}
+		
+		if (n.getValor().charAt(0) > maximo.charAt(0)) {
+			maximo = n.getValor();
+		}
+		return maximo;
+		
+	}
+
+	
+	/**
+	 * Quantidade de nós na Árvore.
+	 */
+		static int cont;
+		
+		public static int qtdNos(NodeElement n) {
+			cont=0;
+			qtdNosArvore(n);
+			return cont;
+		}
+		
+		private static void qtdNosArvore(NodeElement n) {
+			NodeElement filho = null;
+			for(int i = 0; i < n.getFilhos().size(); i++) {
+				filho = n.getFilhos().get(i);
+				qtdNosArvore(filho);
+			}
+			//System.out.print(n.getElemento() + " ");
+			cont++;
+			//return 0;
+		}
+		
+		/**
+		 * FORMA ELEGANTE -- Quantidade de nós
+		 * @param args
+		 */
+		public static int qtdNosRecursiva(NodeElement n) {
+			int cont=0;
+			
+			NodeElement filho = null;
+			for(int i = 0; i < n.getFilhos().size(); i++) {
+				filho = n.getFilhos().get(i);
+				cont += qtdNosRecursiva(filho);
+			}
+
+			return cont+1;
+		}
+
+/**
+ * 
+ * @param n
+ * @return
+ */
+		public static int grau(NodeElement n) {
+			int grau=n.getFilhos().size();
+			
+			NodeElement filho = null;
+			for(int i = 0; i < n.getFilhos().size(); i++) {
+				filho = n.getFilhos().get(i);
+				grau = Math.max(grau(filho), grau);
+			}
+
+			return grau;
+		}
+		
+		
+		
+		
+	    /**
+	     * Realiza o caminhamento In-Ordem.
+	     * @param p Raiz.
+	     */
+//	    public void inOrdem(Position n) {
+//	        Position c; //Node c;
+//	        if (n != null) {
+//	            c = filho(n); //n.getFilho();
+//	            inOrdem(c); //1
+//	            System.out.print(n.element() + "   ");
+//	            while (c != null) {
+//	                c = irmao(c);//c.getIrmao();
+//	                inOrdem(c);
+//	            }
+//	        }
+//	    }
+		
+				
+	
+	    
+	    
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		NodeElement raiz = new NodeElement("A");
+		NodeElement NoB = raiz.adicionarFilho("B");
+		NodeElement NoC = raiz.adicionarFilho("C");
+		NodeElement NoD = raiz.adicionarFilho("D");
+		
+		NoC.adicionarFilho("E");
+		NoC.adicionarFilho("F");
+		NoC.adicionarFilho("G");
+		NoC.adicionarFilho("X");
+
+		NoD.adicionarFilho("H");
+		NoD.adicionarFilho("I");
+		NoC.adicionarFilho("Z");
+		
+		System.out.println("PreOrdem: ");
+		preOrdem(raiz);
+		
+		System.out.println("\n\n\nPosOrdem: ");
+		posOrdem(raiz);
+
+		System.out.println("\n\n\nLargura: ");
+		largura(raiz);
+		
+		//System.out.println("\n\n" + qtdNosRecursiva(raiz));
+
+		//System.out.println("\n\n" + grau(raiz));
+		
+		System.out.println("\n\n\n: Maior " + maior(raiz));
+		
+//		raiz.getFilhos().get(1).adicionarFilho("E");
+//		raiz.getFilhos().get(1).adicionarFilho("F");
+//		raiz.getFilhos().get(1).adicionarFilho("G");
+		
+//		raiz.getFilhos().get(2).adicionarFilho("H");
+//		raiz.getFilhos().get(2).adicionarFilho("I");
+
+	}
+
+}

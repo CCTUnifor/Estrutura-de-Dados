@@ -1,0 +1,81 @@
+/*----------------------------------------------------------------*/
+boolean Busca(No T, int Valor) {
+  if (T == null) return false;
+  else if (Integer.parseInt(T.Dado.toString()) == Valor) return true;
+       else {
+           if (Integer.parseInt(T.Dado.toString()) < Valor) return Busca(T.dir, Valor);
+           else return Busca(T.esq, Valor);
+           }
+}
+
+/*----------------------------------------------------------------*/
+boolean Busca2(No T, int Valor) {
+
+ while (T != null && Integer.parseInt(T.Dado.toString()) != Valor) {
+     if (Integer.parseInt(T.Dado.toString()) < Valor) T = T.dir;
+     else T = T.esq;
+  }
+ return (T != null);
+}
+/*----------------------------------------------------------------*/
+public void Inserir(No T, int Valor) {
+
+  if (T != null) {
+    if (Integer.parseInt(T.Dado.toString()) < Valor) Inserir(T.dir, Valor);
+    else  if (Integer.parseInt(T.Dado.toString()) > Valor) Inserir(T.esq, Valor);
+          else System.out.println("Subárvore já existente... ");
+  }
+  else {
+     T = new No(new Integer(Valor));
+  }
+}
+/*----------------------------------------------------------------*/
+No BuscaInsercao(No T, int Valor) {
+
+ No p=T;
+
+ while (T != null && Integer.parseInt(T.Dado.toString()) != Valor) {
+     p = T; // Guarda o pai do elemento 
+     if (Integer.parseInt(T.Dado.toString()) < Valor) T = T.dir;
+     else T = T.esq;
+  }
+  
+  if (T != null) return null; //Elemento existe na árvore e não pode ser inserido
+  else return p; 
+}
+
+//---------------------------------------------------------------------------
+// Insere um elemento em uma Árvore Binária de Busca --------------
+public void Inserir2(No T, int Valor) {
+  
+  if (isEmpty()) root = new No(new Integer(Valor));
+  else {
+  
+    No p = BuscaInsercao(T, Valor);
+    if (p != null) // Testa se o elemento não existe
+      if (Integer.parseInt(p.Dado.toString()) < Valor)
+        p.dir = new No(new Integer(Valor));
+      else p.esq = new No(new Integer(Valor));   
+     
+  }
+     
+}
+
+public static No copia(No T1, No T2) {
+    if (T1 != null) {
+       //System.out.println(T1.Dado + "\n");
+       T2 = new No(T1.Dado);
+       T2.esq = copia(T1.esq, T2.esq);
+       T2.dir = copia(T1.dir, T2.dir);
+    }
+    return T2;
+}
+
+public static void copia(No T1, No T2) {
+     if (T1 != null) {
+       T2 = new No(T1.Dado);
+        copia(T1.esq, T2.esq);
+        copia(T1.dir, T2.dir);
+    }
+}
+

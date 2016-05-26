@@ -1,0 +1,226 @@
+import java.util.*;
+
+class No {
+
+  Object Dado;
+  No esq;
+  No dir;
+
+  public No() {
+    Dado = null;
+    esq = null;
+    dir = null;
+  }
+
+   public No(Object x) {
+     Dado = x;
+     esq = null;
+     dir = null;
+ }
+
+}
+
+/*-----------------------------------------------------------------*/
+
+class BinExpressao {
+
+No root; // No raiz 
+public static int  i = 0;
+
+public No Create(Object x, No e, No  d) {
+ 		 No Aux = new No(x);
+		 Aux.esq = e;
+  		 Aux.dir = d;
+
+  		 return Aux;
+     }
+     
+
+public boolean isExternal(No n) {
+  	if (n.dir == null && n.esq == null) return true;
+  	else return false;
+}
+
+public boolean isInternal(No n) {
+   if(n.dir != null || n.esq != null) return true;
+   else return false;	
+}
+
+
+public BinExpressao() {
+   root = null;
+}
+
+public void Criar_Raiz(Object x)
+{
+   root = new No(x);
+}
+
+public boolean isEmpty()
+{
+  return root == null;
+}
+
+/*---------------------------------------------------------------*/
+public void Criar_Filho_Esquerdo(No pai, Object x) {
+   if (pai != null) {
+     if (pai.esq != null) System.out.println("Subárvore já existente "); 
+     else  pai.esq = new No(x);
+       
+   }
+}
+
+public void Criar_Filho_Direito(No pai, Object x) {
+   if (pai != null) {
+     if (pai.dir != null) System.out.println("Subárvore já existente ");
+     else  pai.dir = new No(x);
+       
+   }
+}
+
+public No Filho_Direito(No pai) {
+	return pai.dir;
+}
+
+public No Filho_Esquerdo(No pai) {
+	return pai.esq;
+}
+/*--------------- PERCURSOS -------------------- */
+public void PreOrdem(No N) {
+	
+  if (N != null) {
+  	  System.out.print(N.Dado + " ");	
+  	  PreOrdem(N.esq);  	  
+  	  PreOrdem(N.dir);  	 	
+  	}	
+	
+}
+
+public void PosOrdem(No N) {
+
+   if (N != null) {
+    
+      PosOrdem(N.esq);
+      PosOrdem(N.dir);
+      System.out.print(N.Dado + "   ");
+   }
+
+}
+
+public void Euler(No N) {
+
+   if (N != null) {
+      System.out.print(N.Dado + "   ");
+      Euler(N.esq);
+      System.out.print(N.Dado + "   ");
+      Euler(N.dir);
+      System.out.print(N.Dado + "   ");
+   }
+
+}
+
+
+public void Expressao2(No N) {
+
+      if (isInternal(N)) { 
+        System.out.print(" ( ");
+        Expressao2(N.esq);
+      }
+
+       System.out.print(N.Dado);
+
+      if (isInternal(N)) {
+      	Expressao2(N.dir);
+      	System.out.print(" ) ");
+      }
+}
+
+public void Largura() {
+   No f;
+   Vector v = new Vector(); //simulando um vector como uma fila
+   v.add(root); // insere o raiz
+   while(v.size() != 0) {
+       f = (No)v.get(0);   
+   	   System.out.print(f.Dado + "  ");
+   	   v.remove(0);
+       if (f.esq != null) v.add(f.esq);
+       if (f.dir != null) v.add(f.dir);
+   }
+
+}
+
+// Altura
+
+// Destruir a árvore utilizando-se apenas do Garbage para 1 nó....
+
+/*----------------------------------------------------------------*/
+// EXERCICIOS ----------------------------------------------------**
+//******************************************************************
+
+
+public static No copia(No T1, No T2) {
+    if (T1 != null) {
+       //System.out.println(T1.Dado + "\n");
+       T2 = new No(T1.Dado);
+       T2.esq = copia(T1.esq, T2.esq);
+       T2.dir = copia(T1.dir, T2.dir);
+    }
+    return T2;
+}
+
+/*POSORDEM para retornar valor*/
+public float PosOrdemExp(No n) {
+    float r1, r2;
+    String op;
+
+   if (isExternal(n)) return Float.parseFloat(n.Dado.toString());
+   else {
+        r1 = PosOrdemExp(n.esq);
+        r2 = PosOrdemExp(n.dir);
+        op = n.Dado.toString();
+
+        if (op.equals("+")) return r1 + r2;
+        else if(op.equals("-")) return r1 - r2;
+        else if(op.equals("*")) return r1 * r2;
+        else return r1/r2;
+      }  
+}
+
+
+/*----------------------------------------------------------------------*/
+public static void main(String args[]) {
+
+  BinExpressao T  = new BinExpressao();
+  BinExpressao T2 = new BinExpressao();
+  
+  T.Criar_Raiz("*");
+  T.Criar_Filho_Esquerdo(T.root, "+");
+  T.Criar_Filho_Direito(T.root, "-");
+
+  T.Criar_Filho_Esquerdo(T.root.esq, "2");
+  T.Criar_Filho_Direito(T.root.esq, "6");
+
+  T.Criar_Filho_Esquerdo(T.root.dir, "3");
+  T.Criar_Filho_Direito(T.root.dir, "1"); 
+
+
+
+  T.PreOrdem(T.root);
+  System.out.println("\n\n --- ");
+  
+  System.out.println("\n\n");
+  T.Expressao2(T.root);
+  System.out.println("\n\n");
+
+  System.out.println("\n\n");
+  T.Largura();
+ 
+  System.out.println("\n\n");
+  System.out.println(T.PosOrdemExp(T.root));
+ 
+  }
+//---------------------------------------------------------------------------
+
+}
+
+

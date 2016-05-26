@@ -1,24 +1,26 @@
 package Sort;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import LDE.LDESemSentinelas;
 import Lista.ILista;
 import Models.ListaOrdenadaViewModel;
-import Util.ArquivoManager;
-import Util.PerformanceTest;
 
 public class Radix {
-	private static ILista<Integer>[] vetor1;
+	private static List<Integer>[] vetor1;
 	private static int maxDigitos;
 	private static int currentDigitos = 1;
-	private static int numeroPassos = 1;
 	
+	static int index = 0;
+	static int maiorLength;
 	
 	public static void Start(ListaOrdenadaViewModel model){
-		long inicioRadix = System.currentTimeMillis(); // Pega os milisegundos
-		long memoryStart = PerformanceTest.getMemoryUsedNow();
+		
+		model.TipoDeSort = "Radix Sort";
 		
 		maxDigitos = digitos(model.ListaOrdenada);
-		//maxDigitos = 3;
 		vetor1 = formatarLista(model.ListaOrdenada);
 		
 		while(maxDigitos != 0){
@@ -27,68 +29,59 @@ public class Radix {
 			currentDigitos++;
 		}
 		
-		int index = 0;
-		for (int i = 0; i < vetor1.length; i++) {
-			for (int j = 0; j < vetor1[i].size(); j++) {
-				model.ListaOrdenada.set(index, vetor1[i].get(j));
-				index++;
-			}
-		}
+		Arrays.stream(vetor1).forEach(lista -> {
+			lista.stream().forEach(number -> model.ListaOrdenada.set(index++, number));
+		});
 		
-		long memoryFinal = PerformanceTest.getMemoryUsedNow();
-		long finalRadix = System.currentTimeMillis();
-		
-		model.TotalTime = finalRadix - inicioRadix;
-		model.TotalMemoryUsed = memoryFinal - memoryStart;
-		
-		new ArquivoManager().CriarArquivoOrdenado(model);
 	}
 	
-	private static ILista<Integer>[] formatarLista(ILista<Integer> l){
-		ILista<Integer>[] aux = new LDESemSentinelas[10];
+	
+	private static List<Integer>[] formatarLista(List<Integer> l){
+		List<Integer>[] aux = new ArrayList[10];
+		
 		for (int i = 0; i < aux.length; i++) {
-			aux[i] = new LDESemSentinelas<Integer>();
+			aux[i] = new ArrayList<Integer>();
 		}
-		int i = 0;
-		while(i < l.size()){
-			int flag = (l.get(i) % 10);
-			aux[flag].add(l.get(i));
-			i++;
-		}
+
+		l.stream().forEach(number -> {
+			aux[number % 10].add(number);
+		});
+		
 		
 		return aux;
 	}
 	
-	private static ILista<Integer>[] formatarArray(ILista<Integer>[] vetor){
-		ILista<Integer>[] aux = new LDESemSentinelas[10];
+	private static List<Integer>[] formatarArray(List<Integer>[] vetor){
+		List<Integer>[] aux = new ArrayList[10];
+		
 		for (int i = 0; i < aux.length; i++) {
-			aux[i] = new LDESemSentinelas<Integer>();
+			aux[i] = new ArrayList<Integer>();
 		}
 		
-		for (int i = 0; i < vetor.length; i++) {
-			for (int j = 0; j < vetor[i].size(); j++) {
-				int flag = getDigito(vetor[i].get(j));
-				aux[flag].add(vetor[i].get(j));
-			}
-		}
+		Arrays.stream(vetor).forEach(lista -> {
+			lista.stream().forEach(number -> aux[getDigito(number)].add(number));
+		});
 		
 		return aux;
 	}
 	
-	private static int digitos(ILista<Integer> l){
-		int max = Integer.toString(l.get(0)).length();
-		for (int i = 1; i < l.size(); i++) {
-			int aux = Integer.toString(l.get(i)).length();
-			if(aux > max){
-				max = aux;
+	private static int digitos(List<Integer> l){
+		maiorLength = Integer.toString(l.get(0)).length();
+		
+		l.stream().forEach(number -> {
+			int lengthOfNumber = Integer.toString(number).length();
+			if(lengthOfNumber > maiorLength){
+				maiorLength = lengthOfNumber;
 			}
-		}
-		return max;
+		});
+		
+		return maiorLength;
 	}
 	
 	private static int getDigito(int numero){
-		int digitos = Integer.toString(numero).length();
-		if(digitos <= currentDigitos){
+		int lengthNumber = Integer.toString(numero).length();
+		
+		if(lengthNumber <= currentDigitos){
 			return 0;
 		}
 		for (int i = 0; i < currentDigitos; i++) {
@@ -96,7 +89,7 @@ public class Radix {
 		}
 		String s = Integer.toString(numero);
 		return Integer.parseInt(String.valueOf(s.charAt(s.length() - 1)));
-		//return s.charAt(s.length() - 1);
 	}
+	
 	
 }
