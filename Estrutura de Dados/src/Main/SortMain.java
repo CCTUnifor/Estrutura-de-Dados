@@ -1,6 +1,7 @@
 package Main;
 
 import Models.ListaOrdenadaViewModel;
+import Sort.HybridSort;
 import Sort.JavaSort;
 import Sort.Quick;
 import Sort.Radix;
@@ -29,10 +30,11 @@ public class SortMain {
 		model.PathDaListaLida = ARQUIVO + 1;
 		
 		
-		//Radix.Start(model);
-		//JavaSort.Start(model);
-		//Selection.Start(model);
-		Quick.ordenar(model);
+		//new Radix().Start(model);
+		//new JavaSort().Start(model);
+		//new Selection().Start(model);
+		//new Quick().ordenar(model);
+		new HybridSort().Start(model);
 		
 		// Terminando de Configurar o espaço de Memoria Usado e o Tempo
 			long memoryFinal = PerformanceTest.getMemoryUsedNow();

@@ -8,7 +8,7 @@ import LDE.LDESemSentinelas;
 import Lista.ILista;
 import Models.ListaOrdenadaViewModel;
 
-public class Radix {
+public class Radix implements ISort{
 	private static List<Integer>[] vetor1;
 	private static int maxDigitos;
 	private static int currentDigitos = 1;
@@ -16,7 +16,7 @@ public class Radix {
 	static int index = 0;
 	static int maiorLength;
 	
-	public static void Start(ListaOrdenadaViewModel model){
+	public void Start(ListaOrdenadaViewModel model){
 		
 		model.TipoDeSort = "Radix Sort";
 		

@@ -6,8 +6,8 @@ import java.util.List;
 
 import Models.ListaOrdenadaViewModel;
 
-public class JavaSort {
-	public static void Start(ListaOrdenadaViewModel model){
+public class JavaSort implements ISort{
+	public void Start(ListaOrdenadaViewModel model){
 		model.TipoDeSort = "Java Sort";
 		
 		List<Integer> lista = new ArrayList<Integer>();

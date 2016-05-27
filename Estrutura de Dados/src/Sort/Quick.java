@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 import LDE.LDESemSentinelas;
 import Models.ListaOrdenadaViewModel;
 
-public class Quick {
+public class Quick implements ISort{
 	
-	public static void ordenar(ListaOrdenadaViewModel model) {
+	public void Start(ListaOrdenadaViewModel model) {
 	    model.TipoDeSort = "Quick Sort";
 		ordenar(model.ListaOrdenada, 0, model.ListaOrdenada.size());
 	}

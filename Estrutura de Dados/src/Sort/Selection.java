@@ -3,13 +3,13 @@ package Sort;
 
 import Models.ListaOrdenadaViewModel;
 
-public class Selection {
+public class Selection implements ISort{
 	static int menor;
 	static int indiceMenor;
 	static int i = 0;
 	//static int j = 0;
 	
-	public static void Start(ListaOrdenadaViewModel model){
+	public void Start(ListaOrdenadaViewModel model){
 		model.TipoDeSort = "Selection Sort";
 		
 		model.ListaOrdenada.stream().forEach(first -> {
